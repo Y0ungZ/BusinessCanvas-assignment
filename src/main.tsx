@@ -10,6 +10,13 @@ createRoot(document.getElementById('root')!).render(
       theme={{
         token: {
           fontFamily: "'Pretendard', sans-serif",
+          colorPrimary: '#4A7CFE',
+          borderRadius: 8,
+        },
+        components: {
+          Button: {
+            colorPrimaryActive: '#345DD9',
+          },
         },
       }}
     >
