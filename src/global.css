@@ -2,4 +2,13 @@
 
 body {
   font-family: 'Pretendard', sans-serif;
+  margin: 0;
+}
+
+.typo--bold {
+  font-weight: 600;
+}
+
+.typo-size--small {
+  font-size: 0.875rem;
 }
