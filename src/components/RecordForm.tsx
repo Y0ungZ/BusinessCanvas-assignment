@@ -6,7 +6,6 @@ import { useForm } from 'antd/es/form/Form';
 import { UserDataType } from '../types/record';
 
 interface RecordFormProps<T> {
-  setIsValid: React.Dispatch<React.SetStateAction<boolean>>;
   handleFormDataChange: (data: T) => void;
 }
 

@@ -5,10 +5,11 @@ import ValidateFormModal from './components/ValidateFormModal';
 import RecordForm from './components/RecordForm';
 import { UserDataType } from './types/record';
 import { useModal } from './contexts/ModalProvider';
+import { useValidate } from './contexts/ValidateProvider';
 
 function App() {
   const { closeModal } = useModal();
-  const [isValid, setIsValid] = useState(false);
+  const { validate, invalidate } = useValidate();
   const [data, setData] = useState<UserDataType | null>(null);
 
   const onSave = () => {
@@ -20,9 +21,9 @@ function App() {
 
   const handleFormDataChange = (data: UserDataType) => {
     if (data.이름 && data.가입일) {
-      setIsValid(true);
+      validate();
     } else {
-      setIsValid(false);
+      invalidate();
     }
     setData(data);
   };
@@ -30,11 +31,8 @@ function App() {
   return (
     <div>
       <UserList />
-      <ValidateFormModal title="회원 추가" isValid={isValid} onSave={onSave}>
-        <RecordForm
-          setIsValid={setIsValid}
-          handleFormDataChange={handleFormDataChange}
-        />
+      <ValidateFormModal title="회원 추가" onSave={onSave}>
+        <RecordForm handleFormDataChange={handleFormDataChange} />
       </ValidateFormModal>
     </div>
   );

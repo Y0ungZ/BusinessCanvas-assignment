@@ -3,10 +3,10 @@ import { useModal } from '../contexts/ModalProvider';
 import { PropsWithChildren } from 'react';
 import Button from './Button';
 import { CloseOutlined } from '@ant-design/icons';
+import { useValidate } from '../contexts/ValidateProvider';
 
 interface ValidateModalProps extends PropsWithChildren {
   title: string;
-  isValid: boolean;
   onSave: () => void;
 }
 
@@ -40,36 +40,32 @@ const ModalContent = ({ children }: PropsWithChildren) => {
 
 const ModalFooter = ({
   onCancel,
-  isValid,
   onSave,
 }: {
   onCancel: () => void;
-  isValid: boolean;
   onSave: () => void;
-}) => (
-  <div
-    style={{
-      borderTop: '1px solid rgba(0, 0, 0, 0.06)',
-      backgroundColor: 'rgba(0,0,0,0.02)',
-      display: 'flex',
-      justifyContent: 'flex-end',
-      padding: '0.75rem 1rem',
-      gap: '0.5rem',
-    }}
-  >
-    <Button onClick={onCancel}>취소</Button>
-    <Button onClick={onSave} disabled={!isValid} type="primary">
-      저장
-    </Button>
-  </div>
-);
+}) => {
+  const { isValid } = useValidate();
+  return (
+    <div
+      style={{
+        borderTop: '1px solid rgba(0, 0, 0, 0.06)',
+        backgroundColor: 'rgba(0,0,0,0.02)',
+        display: 'flex',
+        justifyContent: 'flex-end',
+        padding: '0.75rem 1rem',
+        gap: '0.5rem',
+      }}
+    >
+      <Button onClick={onCancel}>취소</Button>
+      <Button onClick={onSave} disabled={!isValid} type="primary">
+        저장
+      </Button>
+    </div>
+  );
+};
 
-const ValidateFormModal = ({
-  title,
-  isValid,
-  onSave,
-  children,
-}: ValidateModalProps) => {
+const ValidateFormModal = ({ title, onSave, children }: ValidateModalProps) => {
   const { isModalOpen, closeModal } = useModal();
 
   return (
@@ -82,7 +78,7 @@ const ValidateFormModal = ({
     >
       <ModalHeader title={title} onCancel={closeModal} />
       <ModalContent>{children}</ModalContent>
-      <ModalFooter onCancel={closeModal} isValid={isValid} onSave={onSave} />
+      <ModalFooter onCancel={closeModal} onSave={onSave} />
     </AntdModal>
   );
 };
