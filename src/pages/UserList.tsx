@@ -96,7 +96,9 @@ const UserList = () => {
       title: '',
       dataIndex: 'action',
       width: '3rem',
-      render: (_, record: UserDataType) => <RowAction record={record} />,
+      render: (_, record: UserDataType) => (
+        <RowAction record={record} key={record.id} />
+      ),
     },
   ];
 
