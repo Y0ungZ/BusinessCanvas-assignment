@@ -25,6 +25,9 @@ const RecordForm = ({
       layout="vertical"
       style={{ padding: '0.625rem 1.25rem' }}
       onValuesChange={handleValueChange}
+      initialValues={{
+        직업: JOB_OPTIONS[0],
+      }}
     >
       <Form.Item name="이름" label={<Label htmlFor="이름" required />}>
         <Input id="이름" placeholder="input" />
@@ -41,7 +44,6 @@ const RecordForm = ({
       <Form.Item name="직업" label={<Label htmlFor="직업" />}>
         <Select
           id="직업"
-          defaultValue={JOB_OPTIONS[0]}
           options={JOB_OPTIONS.map(option => ({
             label: option,
             value: option,
