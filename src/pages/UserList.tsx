@@ -6,6 +6,7 @@ import { TableRowSelection } from 'antd/es/table/interface';
 import { useState } from 'react';
 import { nanoid } from 'nanoid';
 import RowAction from '../components/RowAction';
+import { useModal } from '../contexts/ModalProvider';
 
 const getFilterProps = (
   dataIndex: string,
@@ -88,6 +89,7 @@ const dataSource: UserDataType[] = [
 
 const UserList = () => {
   const [selectedRowKeys] = useState<React.Key[]>([]);
+  const { openModal } = useModal();
 
   const rowSelection: TableRowSelection<UserDataType> = {
     selectedRowKeys,
@@ -101,7 +103,12 @@ const UserList = () => {
         style={{ padding: '0.5rem 0.875rem' }}
       >
         <span className="typo--bold">회원 목록</span>
-        <Button color="primary" variant="solid" icon={<PlusOutlined />}>
+        <Button
+          color="primary"
+          variant="solid"
+          icon={<PlusOutlined />}
+          onClick={openModal}
+        >
           추가
         </Button>
       </Flex>
