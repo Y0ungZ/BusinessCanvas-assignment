@@ -101,12 +101,7 @@ const UserList = () => {
         style={{ padding: '0.5rem 0.875rem' }}
       >
         <span className="typo--bold">회원 목록</span>
-        <Button
-          color="primary"
-          variant="solid"
-          content="basic"
-          icon={<PlusOutlined />}
-        >
+        <Button color="primary" variant="solid" icon={<PlusOutlined />}>
           추가
         </Button>
       </Flex>
