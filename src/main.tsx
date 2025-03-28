@@ -5,6 +5,7 @@ import './global.css';
 import { ConfigProvider } from 'antd';
 import ModalProvider from './contexts/ModalProvider.tsx';
 import FormStateProvider from './contexts/FormStateProvider.tsx';
+import StorageProvider from './contexts/StorageProvider.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -22,11 +23,13 @@ createRoot(document.getElementById('root')!).render(
         },
       }}
     >
-      <FormStateProvider>
-        <ModalProvider>
-          <App />
-        </ModalProvider>
-      </FormStateProvider>
+      <StorageProvider>
+        <FormStateProvider>
+          <ModalProvider>
+            <App />
+          </ModalProvider>
+        </FormStateProvider>
+      </StorageProvider>
     </ConfigProvider>
   </StrictMode>,
 );
