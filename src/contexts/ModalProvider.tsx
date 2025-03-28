@@ -10,7 +10,7 @@ interface ModalState {
   key: ModalType;
 }
 
-const ModalContext = createContext<ModalState | undefined>(undefined);
+const ModalContext = createContext<ModalState | null>(null);
 
 const ModalProvider = ({ children }: PropsWithChildren) => {
   const [key, setKey] = useState<ModalType>('create');

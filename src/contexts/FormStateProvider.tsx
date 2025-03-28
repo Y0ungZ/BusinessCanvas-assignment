@@ -11,9 +11,7 @@ interface FormState<T> {
   handleValueChange: () => void;
 }
 
-const FormStateContext = createContext<FormState<UserDataType> | undefined>(
-  undefined,
-);
+const FormStateContext = createContext<FormState<UserDataType> | null>(null);
 
 const FormStateProvider = ({ children }: PropsWithChildren) => {
   const [form] = useForm<UserDataType>();
