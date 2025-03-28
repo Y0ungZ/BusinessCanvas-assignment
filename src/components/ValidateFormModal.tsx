@@ -3,7 +3,7 @@ import { useModal } from '../contexts/ModalProvider';
 import { PropsWithChildren } from 'react';
 import Button from './Button';
 import { CloseOutlined } from '@ant-design/icons';
-import { useValidate } from '../contexts/ValidateProvider';
+import { useFormState } from '../contexts/FormStateProvider';
 
 interface ValidateModalProps extends PropsWithChildren {
   title: string;
@@ -45,7 +45,7 @@ const ModalFooter = ({
   onCancel: () => void;
   onSave: () => void;
 }) => {
-  const { isValid } = useValidate();
+  const { isValid } = useFormState();
   return (
     <div
       style={{

@@ -2,23 +2,10 @@ import { Checkbox, DatePicker, Form, Input, Select } from 'antd';
 import Label from './Label';
 import TextArea from 'antd/es/input/TextArea';
 import { JOB_OPTIONS } from '../types/field';
-import { useForm } from 'antd/es/form/Form';
-import { UserDataType } from '../types/record';
+import { useFormState } from '../contexts/FormStateProvider';
 
-interface RecordFormProps<T> {
-  handleFormDataChange: (data: T) => void;
-}
-
-const RecordForm = ({
-  handleFormDataChange,
-}: RecordFormProps<UserDataType>) => {
-  const [form] = useForm<UserDataType>();
-
-  const handleValueChange = () => {
-    const values = form.getFieldsValue();
-    handleFormDataChange(values);
-  };
-
+const RecordForm = () => {
+  const { form, handleValueChange } = useFormState();
   return (
     <Form
       form={form}
