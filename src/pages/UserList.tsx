@@ -62,7 +62,7 @@ const columns: TableColumnType<UserDataType>[] = [
     title: '',
     dataIndex: 'action',
     width: '3rem',
-    render: (_, record: UserDataType) => <RowAction id={record.id} />,
+    render: (_, record: UserDataType) => <RowAction record={record} />,
   },
 ];
 

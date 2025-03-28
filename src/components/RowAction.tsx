@@ -2,18 +2,22 @@ import { MoreOutlined } from '@ant-design/icons';
 import Button from './Button';
 import type { MenuProps } from 'antd';
 import { Dropdown } from 'antd';
+import { useModal } from '../contexts/ModalProvider';
+import { UserDataType } from '../types/record';
 
-interface RowActionProps {
-  id: string;
+interface RowActionProps<T> {
+  record: T;
 }
 
-const RowAction = ({ id }: RowActionProps) => {
+const RowAction = ({ record }: RowActionProps<UserDataType>) => {
+  const { openModal } = useModal();
+
   const items: MenuProps['items'] = [
     {
       key: '1',
       label: '수정',
       onClick: () => {
-        console.log(id);
+        openModal();
       },
     },
     { type: 'divider' },
@@ -22,7 +26,7 @@ const RowAction = ({ id }: RowActionProps) => {
       label: '삭제',
       danger: true,
       onClick: () => {
-        console.log(id);
+        console.log(record.id);
       },
     },
   ];
