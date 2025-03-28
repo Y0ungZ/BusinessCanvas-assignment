@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './global.css';
 import { ConfigProvider } from 'antd';
+import ModalProvider from './contexts/ModalProvider.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -20,7 +21,9 @@ createRoot(document.getElementById('root')!).render(
         },
       }}
     >
-      <App />
+      <ModalProvider>
+        <App />
+      </ModalProvider>
     </ConfigProvider>
   </StrictMode>,
 );
