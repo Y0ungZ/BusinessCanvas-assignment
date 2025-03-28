@@ -4,9 +4,9 @@ import { PlusOutlined } from '@ant-design/icons';
 import { UserDataType } from '../types/record';
 import { TableRowSelection } from 'antd/es/table/interface';
 import { useState } from 'react';
-import { nanoid } from 'nanoid';
 import RowAction from '../components/RowAction';
 import { useModal } from '../contexts/ModalProvider';
+import { useStorage } from '../contexts/StorageProvider';
 
 const getFilterProps = (
   dataIndex: string,
@@ -14,86 +14,91 @@ const getFilterProps = (
 ): TableColumnType<UserDataType> => ({
   filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => (
     <div style={{ padding: 8 }}>
-      {datas.map(option => (
-        <div key={option} style={{ padding: '0.3125rem 0.75rem' }}>
-          <Checkbox
-            value={option}
-            checked={selectedKeys.includes(option)}
-            onChange={() => {
-              const newSelectedKeys = selectedKeys.includes(option)
-                ? selectedKeys.filter(key => key !== option)
-                : [...selectedKeys, option];
-              setSelectedKeys(newSelectedKeys);
-              confirm();
-            }}
-          >
-            {option}
-          </Checkbox>
-        </div>
-      ))}
+      {datas.map((option, idx) => {
+        const label =
+          String(option) === 'true'
+            ? '선택됨'
+            : String(option) === 'false'
+            ? '선택 안함'
+            : option;
+
+        return (
+          <div key={idx} style={{ padding: '0.3125rem 0.75rem' }}>
+            <Checkbox
+              value={option}
+              checked={selectedKeys.includes(option)}
+              onChange={() => {
+                const newSelectedKeys = selectedKeys.includes(option)
+                  ? selectedKeys.filter(key => key !== option)
+                  : [...selectedKeys, option];
+                setSelectedKeys(newSelectedKeys);
+                confirm();
+              }}
+            >
+              {label}
+            </Checkbox>
+          </div>
+        );
+      })}
     </div>
   ),
   onFilter: (value, record: UserDataType) => record[dataIndex] === value,
 });
 
-const columns: TableColumnType<UserDataType>[] = [
-  {
-    title: '이름',
-    dataIndex: '이름',
-    width: '7.5rem',
-    ...getFilterProps('이름', ['John Doe']),
-  },
-  {
-    title: '주소',
-    dataIndex: '주소',
-    width: '15.5rem',
-    ...getFilterProps('주소', ['서울 강남구']),
-  },
-  { title: '메모', dataIndex: '메모', width: '15.5rem' },
-  { title: '가입일', dataIndex: '가입일', width: '12.5rem' },
-  { title: '직업', dataIndex: '직업', width: '15.5rem' },
-  {
-    title: '이메일 수신 동의',
-    dataIndex: '이메일 수신 동의',
-    width: '9.5rem',
-    render: (checked: boolean) => <Checkbox checked={checked} />,
-  },
-  {
-    title: '',
-    dataIndex: 'action',
-    width: '3rem',
-    render: (_, record: UserDataType) => <RowAction record={record} />,
-  },
-];
-
-const dataSource: UserDataType[] = [
-  {
-    id: nanoid(),
-    이름: 'John Doe',
-    주소: '서울 강남구',
-    메모: '외국인',
-    가입일: '2024-10-02',
-    직업: '개발자',
-    '이메일 수신 동의': true,
-  },
-  {
-    id: nanoid(),
-    이름: 'Foo Bar',
-    주소: '서울 서초구',
-    메모: '한국인',
-    가입일: '2024-10-01',
-    직업: 'PO',
-    '이메일 수신 동의': false,
-  },
-];
-
 const UserList = () => {
   const [selectedRowKeys] = useState<React.Key[]>([]);
+  const { records, rowValueSet } = useStorage();
   const { openModal } = useModal();
 
   const rowSelection: TableRowSelection<UserDataType> = {
     selectedRowKeys,
   };
+
+  const columns: TableColumnType<UserDataType>[] = [
+    {
+      title: '이름',
+      dataIndex: '이름',
+      width: '7.5rem',
+      ...getFilterProps('이름', rowValueSet('이름')),
+    },
+    {
+      title: '주소',
+      dataIndex: '주소',
+      width: '15.5rem',
+      ...getFilterProps('주소', rowValueSet('주소')),
+    },
+    {
+      title: '메모',
+      dataIndex: '메모',
+      width: '15.5rem',
+      ...getFilterProps('메모', rowValueSet('메모')),
+    },
+    {
+      title: '가입일',
+      dataIndex: '가입일',
+      width: '12.5rem',
+      ...getFilterProps('가입일', rowValueSet('가입일')),
+    },
+    {
+      title: '직업',
+      dataIndex: '직업',
+      width: '15.5rem',
+      ...getFilterProps('직업', rowValueSet('직업')),
+    },
+    {
+      title: '이메일 수신 동의',
+      dataIndex: '이메일 수신 동의',
+      width: '9.5rem',
+      render: (checked: boolean) => <Checkbox checked={checked} />,
+      ...getFilterProps('이메일 수신 동의', rowValueSet('이메일 수신 동의')),
+    },
+    {
+      title: '',
+      dataIndex: 'action',
+      width: '3rem',
+      render: (_, record: UserDataType) => <RowAction record={record} />,
+    },
+  ];
 
   return (
     <div>
@@ -107,7 +112,7 @@ const UserList = () => {
           color="primary"
           variant="solid"
           icon={<PlusOutlined />}
-          onClick={openModal}
+          onClick={() => openModal('create')}
         >
           추가
         </Button>
@@ -115,7 +120,7 @@ const UserList = () => {
       <Table<UserDataType>
         rowSelection={rowSelection}
         columns={columns}
-        dataSource={dataSource}
+        dataSource={records}
         rowKey={'id'}
         pagination={false}
       />

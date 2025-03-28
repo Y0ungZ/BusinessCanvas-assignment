@@ -4,12 +4,14 @@ import type { MenuProps } from 'antd';
 import { Dropdown } from 'antd';
 import { useModal } from '../contexts/ModalProvider';
 import { UserDataType } from '../types/record';
+import { useStorage } from '../contexts/StorageProvider';
 
 interface RowActionProps<T> {
   record: T;
 }
 
 const RowAction = ({ record }: RowActionProps<UserDataType>) => {
+  const { deleteRecord } = useStorage();
   const { openModal } = useModal();
 
   const items: MenuProps['items'] = [
@@ -17,7 +19,7 @@ const RowAction = ({ record }: RowActionProps<UserDataType>) => {
       key: '1',
       label: '수정',
       onClick: () => {
-        openModal();
+        openModal('update', record);
       },
     },
     { type: 'divider' },
@@ -26,7 +28,7 @@ const RowAction = ({ record }: RowActionProps<UserDataType>) => {
       label: '삭제',
       danger: true,
       onClick: () => {
-        console.log(record.id);
+        deleteRecord(record.id);
       },
     },
   ];

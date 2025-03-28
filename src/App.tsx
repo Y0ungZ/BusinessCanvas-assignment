@@ -4,12 +4,20 @@ import ValidateFormModal from './components/ValidateFormModal';
 import RecordForm from './components/RecordForm';
 import { useModal } from './contexts/ModalProvider';
 import { useFormState } from './contexts/FormStateProvider';
+import { useStorage } from './contexts/StorageProvider';
 
 function App() {
-  const { closeModal } = useModal();
-  const { onSave } = useFormState();
+  const { createRecord, updateRecord } = useStorage();
+  const { closeModal, key, record } = useModal();
+  const { form, onSave } = useFormState();
 
   const handleSave = () => {
+    if (key === 'create') {
+      createRecord(form.getFieldsValue());
+    }
+    if (key === 'update' && record) {
+      updateRecord(record.id, form.getFieldsValue());
+    }
     onSave();
     closeModal();
   };

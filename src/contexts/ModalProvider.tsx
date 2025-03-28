@@ -1,17 +1,27 @@
 import { createContext, PropsWithChildren, useContext, useState } from 'react';
+import { UserDataType } from '../types/record';
 
+export type ModalType = 'create' | 'update';
 interface ModalState {
   isModalOpen: boolean;
-  openModal: () => void;
+  openModal: (type: ModalType, record?: UserDataType) => void;
   closeModal: () => void;
+  record: UserDataType | null;
+  key: ModalType;
 }
 
 const ModalContext = createContext<ModalState | undefined>(undefined);
 
 const ModalProvider = ({ children }: PropsWithChildren) => {
+  const [key, setKey] = useState<ModalType>('create');
+  const [record, setRecord] = useState<UserDataType | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const openModal = () => {
+  const openModal = (type: ModalType, record?: UserDataType) => {
+    setKey(type);
+    if (record) {
+      setRecord(record);
+    }
     setIsModalOpen(true);
   };
 
@@ -23,6 +33,8 @@ const ModalProvider = ({ children }: PropsWithChildren) => {
     isModalOpen,
     openModal,
     closeModal,
+    key,
+    record,
   };
 
   return (
