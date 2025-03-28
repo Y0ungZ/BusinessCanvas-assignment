@@ -6,7 +6,7 @@ import { useModal } from './contexts/ModalProvider';
 import { useFormState } from './contexts/FormStateProvider';
 import { useStorage } from './contexts/StorageProvider';
 
-function App() {
+const App = () => {
   const { createRecord, updateRecord } = useStorage();
   const { closeModal, key, record } = useModal();
   const { form, onSave } = useFormState();
@@ -30,6 +30,6 @@ function App() {
       </ValidateFormModal>
     </div>
   );
-}
+};
 
 export default App;
